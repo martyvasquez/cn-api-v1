@@ -1,0 +1,20 @@
+Nutrient code,Nutrient description,Nutrient description abbrev,Nutrient unit,Date added,Last modified
+203,Protein,Pro,g,10/29/1997,10/29/1997
+204,Total Fat,Fat,g,10/29/1997,10/29/1997
+205,Carbohydrate,Carb,g,10/29/1997,10/29/1997
+207,Ash,Ash,g,10/29/1997,10/29/1997
+208,Food Energy,FE,kcal,10/29/1997,10/29/1997
+255,Moisture,Mois,g,10/29/1997,10/29/1997
+269,Total Sugars,Sug,g,12/17/2013,12/17/2013
+291,Total Dietary Fiber,TDF,g,10/29/1997,10/29/1997
+301,Calcium,Ca,mg,10/29/1997,10/29/1997
+303,Iron,Fe,mg,10/29/1997,10/29/1997
+306,Potassium,K,mg,05/02/2017,05/02/2017
+307,Sodium,Na,mg,10/29/1997,10/29/1997
+320,"Vitamin A, RAE","VitA, RAE",mcg,10/24/2024,10/24/2024
+328,Vitamin D (D2 + D3),VitD,mcg,05/02/2017,05/02/2017
+401,Vitamin C,VitC,mg,10/29/1997,10/29/1997
+539,Added Sugars,SugA,g,04/01/2022,04/01/2022
+601,Cholesterol,Chol,mg,10/29/1997,10/29/1997
+605,Total Trans,Trans,g,11/24/2005,11/24/2005
+606,Saturated Fat,Sfat,g,10/29/1997,10/29/1997
