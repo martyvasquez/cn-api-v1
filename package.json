@@ -9,6 +9,7 @@
     "lint": "next lint",
     "db:migrate": "node scripts/run-migrations.js",
     "import:data": "tsx scripts/import-cn-data.ts",
+    "import:complete": "tsx scripts/import-complete-cn-data.ts",
     "generate:api-key": "tsx scripts/generate-api-key.ts"
   },
   "dependencies": {
