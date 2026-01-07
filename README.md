@@ -5,7 +5,8 @@ A usage-metered REST API for the USDA Child Nutrition (CN) Database with tiered 
 ## Features
 
 - **RESTful API** - Search, list, and retrieve CN product data
-- **API Key Authentication** - Secure Bearer token authentication
+- **MCP Support** - Model Context Protocol server for AI assistants (Claude Desktop)
+- **API Key Authentication** - Secure Bearer token + URL parameter authentication
 - **Usage-Based Billing** - Three tiers with monthly call limits
 - **Rate Limiting** - Automatic enforcement of tier limits
 - **Usage Tracking** - Real-time usage monitoring and statistics
@@ -352,6 +353,74 @@ SET is_active = false
 WHERE id = 'uuid-here';
 ```
 
+## MCP Support (Model Context Protocol)
+
+The CN Database API includes an MCP server that allows AI assistants like Claude Desktop to query the database directly.
+
+### Quick Start with Claude Desktop
+
+1. **Generate an API key:**
+   ```bash
+   npm run quick-key -- "My Name" basic
+   ```
+
+2. **Configure Claude Desktop:**
+
+   Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+   ```json
+   {
+     "mcpServers": {
+       "cn-database": {
+         "command": "node",
+         "args": ["--loader", "tsx", "/path/to/cn-v2/mcp/server.ts"],
+         "env": {
+           "MCP_API_BASE_URL": "https://cn-api-v1.vercel.app",
+           "MCP_API_KEY": "cn_live_your_api_key_here"
+         }
+       }
+     }
+   }
+   ```
+
+3. **Restart Claude Desktop**
+
+### Available MCP Tools
+
+- **cn_list_products** - List products with filtering
+- **cn_search_products** - Full-text search
+- **cn_get_product** - Get product details
+- **cn_get_nutrition** - Get nutrition data
+- **cn_get_servings** - Get serving conversions
+
+### Example Usage in Claude
+
+Once configured, you can ask Claude:
+
+- "List all dairy products"
+- "Search for whole wheat bread"
+- "What are the nutrition facts for CN number 1001?"
+- "Show serving sizes for butter"
+
+For detailed MCP setup instructions, see [mcp/README.md](./mcp/README.md).
+
+### URL-Based Authentication
+
+The API supports both Bearer token and URL parameter authentication:
+
+**Bearer Token (Recommended):**
+```bash
+curl -H "Authorization: Bearer cn_live_abc123..." \
+  "https://your-api.vercel.app/api/products/1001"
+```
+
+**URL Parameter (for MCP/programmatic access):**
+```bash
+curl "https://your-api.vercel.app/api/products/1001?api_key=cn_live_abc123..."
+```
+
+**Note:** URL parameter authentication is less secure as API keys may appear in server logs. Use Bearer tokens for browser-based or public clients.
+
 ## Error Handling
 
 The API returns standardized error responses:
@@ -453,8 +522,14 @@ npm run build        # Build for production
 npm run start        # Start production server
 npm run lint         # Run ESLint
 
-npm run import:data         # Import CN database from CSV
-npm run generate:api-key    # Generate new API key
+npm run import:data          # Import CN database from CSV
+npm run import:complete      # Import ALL CN data (complete dataset)
+npm run generate:api-key     # Generate new API key (interactive)
+npm run quick-key            # Quick API key generation
+
+npm run mcp:dev             # Start MCP server with hot-reload
+npm run mcp:start           # Start MCP server
+npm run mcp:build           # Build MCP server
 ```
 
 ## Security Considerations

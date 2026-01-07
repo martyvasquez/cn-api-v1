@@ -11,37 +11,42 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   if (pathname.startsWith('/api/products')) {
-    // Check for Authorization header
+    let apiKey: string | null = null;
+    let authMethod: 'bearer' | 'url' | null = null;
+
+    // Check for Authorization header first (preferred method)
     const authHeader = request.headers.get('authorization');
+    if (authHeader?.startsWith('Bearer ')) {
+      apiKey = authHeader.substring(7); // Remove 'Bearer ' prefix
+      authMethod = 'bearer';
+    }
 
-    if (!authHeader) {
+    // Fallback to URL parameter if no Bearer token
+    if (!apiKey) {
+      const urlApiKey = request.nextUrl.searchParams.get('api_key');
+      if (urlApiKey && urlApiKey.trim().length > 0) {
+        apiKey = urlApiKey.trim();
+        authMethod = 'url';
+      }
+    }
+
+    // No API key found via any method
+    if (!apiKey) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Missing Authorization header. Please provide an API key using: Authorization: Bearer YOUR_API_KEY',
+          error: 'Missing API key. Provide via Authorization: Bearer <key> header or ?api_key=<key> parameter',
         },
         { status: 401 }
       );
     }
 
-    // Check if it's a Bearer token
-    if (!authHeader.startsWith('Bearer ')) {
+    // Validate API key format
+    if (apiKey.trim().length === 0) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Invalid Authorization header format. Use: Authorization: Bearer YOUR_API_KEY',
-        },
-        { status: 401 }
-      );
-    }
-
-    const apiKey = authHeader.substring(7); // Remove 'Bearer ' prefix
-
-    if (!apiKey || apiKey.trim().length === 0) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'API key is empty. Please provide a valid API key.',
+          error: 'API key is empty',
         },
         { status: 401 }
       );
@@ -50,6 +55,7 @@ export function middleware(request: NextRequest) {
     // Add the API key to the request headers so route handlers can access it
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set('x-api-key', apiKey);
+    requestHeaders.set('x-auth-method', authMethod); // For analytics/logging
 
     return NextResponse.next({
       request: {
