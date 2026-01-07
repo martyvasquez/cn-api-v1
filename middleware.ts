@@ -55,7 +55,7 @@ export function middleware(request: NextRequest) {
     // Add the API key to the request headers so route handlers can access it
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set('x-api-key', apiKey);
-    requestHeaders.set('x-auth-method', authMethod); // For analytics/logging
+    requestHeaders.set('x-auth-method', authMethod || 'unknown'); // For analytics/logging
 
     return NextResponse.next({
       request: {
