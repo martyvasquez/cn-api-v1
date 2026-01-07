@@ -51,10 +51,10 @@ export async function handleGetNutrition(args: any, apiKey?: string): Promise<To
     let output = `## Nutrition Information: ${data.product_name}\n\n`;
     output += `**CN Number**: ${data.cn_number}\n\n`;
 
-    if (!data.nutrition_data || Object.keys(data.nutrition_data).length === 0) {
+    if (!data.nutrition || Object.keys(data.nutrition).length === 0) {
       output += `No nutrition data available for this product.\n`;
     } else {
-      const nutrition = data.nutrition_data;
+      const nutrition = data.nutrition;
 
       output += `### Macronutrients\n`;
       if (nutrition.energy_kcal || nutrition.kcal) {

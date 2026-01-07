@@ -117,7 +117,8 @@ export class CNAPIClient {
   async getNutrition(cnNumber: string): Promise<APIResponse<{
     cn_number: string;
     product_name: string;
-    nutrition_data: Record<string, number>;
+    serving_size: string;
+    nutrition: Record<string, number>;
   }>> {
     const url = this.buildUrl(`/api/products/${cnNumber}/nutrition`);
     return this.makeRequest(url);
