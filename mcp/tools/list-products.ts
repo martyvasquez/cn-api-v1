@@ -42,10 +42,10 @@ export async function handleListProducts(args: any, apiKey?: string): Promise<To
     const params = listProductsSchema.parse(args);
 
     // Call API
-    // Determine base URL: use VERCEL_URL in production, localhost in development
+    // Determine base URL: use production URL on Vercel, localhost in development
     const baseUrl = apiKey
-      ? (process.env.VERCEL_URL
-          ? `https://${process.env.VERCEL_URL}`
+      ? (process.env.VERCEL_ENV === 'production'
+          ? 'https://cn-api-v1.vercel.app'
           : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000')
       : undefined;
     const client = apiKey ? new CNAPIClient(apiKey, baseUrl) : new CNAPIClient();

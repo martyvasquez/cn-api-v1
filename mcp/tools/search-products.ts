@@ -48,8 +48,8 @@ export async function handleSearchProducts(args: any, apiKey?: string): Promise<
 
     // Call API
     const baseUrl = apiKey
-      ? (process.env.VERCEL_URL
-          ? `https://${process.env.VERCEL_URL}`
+      ? (process.env.VERCEL_ENV === 'production'
+          ? 'https://cn-api-v1.vercel.app'
           : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000')
       : undefined;
     const client = apiKey ? new CNAPIClient(apiKey, baseUrl) : new CNAPIClient();
