@@ -355,35 +355,49 @@ WHERE id = 'uuid-here';
 
 ## MCP Support (Model Context Protocol)
 
-The CN Database API includes an MCP server that allows AI assistants like Claude Desktop to query the database directly.
+The CN Database API provides an MCP server that allows AI assistants like Claude Desktop to query the database directly.
 
-### Quick Start with Claude Desktop
+### Quick Start with Claude Desktop (Remote Connector)
 
-1. **Generate an API key:**
+**Easiest Method - No installation required!**
+
+1. **Get an API key** (or generate one if you have access):
    ```bash
-   npm run quick-key -- "My Name" basic
+   npm run quick-key -- "Your Name" basic
    ```
 
-2. **Configure Claude Desktop:**
+2. **Add to Claude Desktop:**
+   - Open Claude Desktop → **Settings** → **Connectors**
+   - Click **Add Custom Connector**
+   - Configure:
+     - **Name**: `CN Database`
+     - **URL**: `https://cn-api-v1.vercel.app/api/mcp?api_key=cn_live_YOUR_KEY_HERE`
+   - Click **Save**
 
-   Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
+3. **Start using!** Claude can now query the CN database directly.
 
-   ```json
-   {
-     "mcpServers": {
-       "cn-database": {
-         "command": "node",
-         "args": ["--loader", "tsx", "/path/to/cn-v2/mcp/server.ts"],
-         "env": {
-           "MCP_API_BASE_URL": "https://cn-api-v1.vercel.app",
-           "MCP_API_KEY": "cn_live_your_api_key_here"
-         }
-       }
-     }
-   }
-   ```
+### Alternative: Local MCP Server
 
-3. **Restart Claude Desktop**
+For advanced users who want to run the MCP server locally, edit your Claude Desktop config:
+
+`~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "cn-database": {
+      "command": "node",
+      "args": ["--loader", "tsx", "/path/to/cn-v2/mcp/server.ts"],
+      "env": {
+        "MCP_API_BASE_URL": "https://cn-api-v1.vercel.app",
+        "MCP_API_KEY": "cn_live_your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+Then restart Claude Desktop.
 
 ### Available MCP Tools
 

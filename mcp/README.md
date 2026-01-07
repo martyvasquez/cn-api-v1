@@ -12,6 +12,89 @@ The CN Database MCP server provides 5 tools that Claude can use to search and re
 - **cn_get_nutrition** - Get nutrition data for a product
 - **cn_get_servings** - Get serving size conversions
 
+## Two Ways to Connect
+
+### Option 1: Remote Connector (Recommended - No Setup Required)
+
+Use the HTTP MCP endpoint deployed on Vercel. This is the easiest way to connect Claude Desktop to the CN Database.
+
+**Setup:**
+1. Get an API key (contact the API administrator or generate one if you have access)
+2. In Claude Desktop, go to **Settings** → **Connectors** → **Add Custom Connector**
+3. Configure:
+   - **Name**: `CN Database`
+   - **URL**: `https://cn-api-v1.vercel.app/api/mcp?api_key=YOUR_API_KEY_HERE`
+
+Replace `YOUR_API_KEY_HERE` with your actual `cn_live_` API key.
+
+**That's it!** Claude can now query the CN database directly.
+
+### Option 2: Local MCP Server (Advanced)
+
+Run the MCP server locally on your machine using Node.js. This requires more setup but gives you full control.
+
+See [Local Setup Instructions](#local-setup-advanced) below for details.
+
+---
+
+## Remote Connector Setup (Detailed)
+
+### Step 1: Get an API Key
+
+You need a valid CN Database API key starting with `cn_live_`.
+
+**If you have access to generate keys:**
+```bash
+npm run quick-key -- "Your Name" basic
+```
+
+**If you don't have access:** Contact the API administrator to provide you with an API key.
+
+### Step 2: Add to Claude Desktop
+
+1. Open **Claude Desktop**
+2. Go to **Settings** (gear icon in the bottom left)
+3. Click **Connectors** in the sidebar
+4. Click **Add Custom Connector**
+5. Fill in the form:
+   - **Name**: `CN Database` (or any name you prefer)
+   - **URL**: `https://cn-api-v1.vercel.app/api/mcp?api_key=cn_live_YOUR_KEY_HERE`
+
+   Replace `cn_live_YOUR_KEY_HERE` with your actual API key.
+
+6. Click **Save**
+
+### Step 3: Start Using It!
+
+In any Claude chat, you can now ask questions like:
+- "List all dairy products in the CN database"
+- "Search for whole wheat bread products"
+- "What are the nutrition facts for CN number 122134?"
+- "Show me serving conversions for butter"
+
+Claude will automatically use the CN Database MCP tools to answer your questions.
+
+### Troubleshooting Remote Connector
+
+**Issue: "Connection failed" or "Server not responding"**
+- Verify your API key is correct and starts with `cn_live_`
+- Check that the URL is exactly: `https://cn-api-v1.vercel.app/api/mcp?api_key=YOUR_KEY`
+- Ensure you haven't exceeded your monthly API usage limit
+
+**Issue: "Invalid API key"**
+- Make sure the API key is active and not expired
+- Contact the administrator if you need a new key
+
+**Issue: "Rate limit exceeded"**
+- You've hit your monthly usage limit
+- Upgrade your tier or wait until next month for the limit to reset
+
+---
+
+## Local Setup (Advanced)
+
+This section is for users who want to run the MCP server locally on their machine.
+
 ## Prerequisites
 
 1. **Node.js 18+** installed
